@@ -1,0 +1,35 @@
+﻿1)touch README.md文件是關於工程代碼的介紹，類似與使用說明書
+2)git init  初始化一個本地的 git倉庫，生成隱藏的.git目錄(隱藏的.git目錄可使用ls -aF命令可以查看到)
+3)git add  README.md  把README.md文件添加到倉庫中
+4)git commit -m "first commit"  執行提交說明，在Gitz中這個屬於強制性的
+5)git remote add origin https://github.com/XFZLDXF/TEST.git   添加本地倉庫origin和指定遠程倉庫地址
+6)git push origin master  推送本地倉庫到遠程指定的master分支上
+ 
+提交新代碼：
+先add，然後commit，然後push
+ 
+在以上命令使用過程中，如果遇到問題，可以在git help裏用錯誤提示搜解?方案
+https://help.github.com/
+
+
+
+
+https://github.com/gn00254192/Draweducation.git     http
+git@github.com:gn00254192/Draweducation.git         ssh
+
+
+綁定機器的 SSH KEY
+因為要讓 Github 知道是我們這台電腦上傳的專案，
+所以我們要和 Github 之間建立一種默契，這個默契就是使用 ssh 協定時的 public key，
+我們給 Github 我們本機的 ssh public key ，
+告訴 Github 拿著這個 key 的電腦才是這個帳號的使用者， 
+如此一來就只能由這台電腦進行管理，才不會造成其他人來我們的帳號亂上傳東西的窘境。
+
+首先，點選右上角的工具按鈕，進入帳號設定頁面，在頁面的左下角點選 SSH KEY
+
+http://dylandy.github.io/Easy-Git-Tutorial/index.html
+
+
+亂碼是因為編碼，下載  notepad++,即可
+
+http://notepad-plus-plus.org/download/v6.6.7.html
