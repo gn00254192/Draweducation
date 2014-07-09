@@ -1,30 +1,40 @@
-1)touch README.md¤å¥ó¬OÃö©ó¤uµ{¥N½Xªº¤¶²Ğ¡AÃş¦ü»P¨Ï¥Î»¡©ú®Ñ
-2)git init  ªì©l¤Æ¤@­Ó¥»¦aªº git­Ü®w¡A¥Í¦¨ÁôÂÃªº.git¥Ø¿ı(ÁôÂÃªº.git¥Ø¿ı¥i¨Ï¥Îls -aF©R¥O¥i¥H¬d¬İ¨ì)
-3)git add  README.md  §âREADME.md¤å¥ó²K¥[¨ì­Ü®w¤¤
-4)git commit -m "first commit"  °õ¦æ´£¥æ»¡©ú¡A¦bGitz¤¤³o­ÓÄİ©ó±j¨î©Êªº
-5)git remote add origin https://github.com/XFZLDXF/TEST.git   ²K¥[¥»¦a­Ü®worigin©M«ü©w»·µ{­Ü®w¦a§}
-6)git push origin master  ±À°e¥»¦a­Ü®w¨ì»·µ{«ü©wªºmaster¤À¤ä¤W
+ï»¿1)touch README.mdæ–‡ä»¶æ˜¯é—œæ–¼å·¥ç¨‹ä»£ç¢¼çš„ä»‹ç´¹ï¼Œé¡ä¼¼èˆ‡ä½¿ç”¨èªªæ˜æ›¸
+2)git init  åˆå§‹åŒ–ä¸€å€‹æœ¬åœ°çš„ gitå€‰åº«ï¼Œç”Ÿæˆéš±è—çš„.gitç›®éŒ„(éš±è—çš„.gitç›®éŒ„å¯ä½¿ç”¨ls -aFå‘½ä»¤å¯ä»¥æŸ¥çœ‹åˆ°)
+3)git add  README.md  æŠŠREADME.mdæ–‡ä»¶æ·»åŠ åˆ°å€‰åº«ä¸­
+4)git commit -m "first commit"  åŸ·è¡Œæäº¤èªªæ˜ï¼Œåœ¨Gitzä¸­é€™å€‹å±¬æ–¼å¼·åˆ¶æ€§çš„
+5)git remote add origin https://github.com/XFZLDXF/TEST.git   æ·»åŠ æœ¬åœ°å€‰åº«originå’ŒæŒ‡å®šé ç¨‹å€‰åº«åœ°å€
+6)git push origin master  æ¨é€æœ¬åœ°å€‰åº«åˆ°é ç¨‹æŒ‡å®šçš„masteråˆ†æ”¯ä¸Š
  
-´£¥æ·s¥N½X¡G
-¥ıadd¡AµM«ácommit¡AµM«ápush
+æäº¤æ–°ä»£ç¢¼ï¼š
+å…ˆaddï¼Œç„¶å¾Œcommitï¼Œç„¶å¾Œpush
  
-¦b¥H¤W©R¥O¨Ï¥Î¹Lµ{¤¤¡A¦pªG¹J¨ì°İÃD¡A¥i¥H¦bgit helpùØ¥Î¿ù»~´£¥Ü·j¸Ñ?¤è®×
+åœ¨ä»¥ä¸Šå‘½ä»¤ä½¿ç”¨éç¨‹ä¸­ï¼Œå¦‚æœé‡åˆ°å•é¡Œï¼Œå¯ä»¥åœ¨git helpè£ç”¨éŒ¯èª¤æç¤ºæœè§£?æ–¹æ¡ˆ
 https://help.github.com/
 
 
 
 
-https://github.com/gn00254192/Draweducation.git     http
+https://github.com/gn00254192/Draweducation.git     http   ç¹ªç•«æ•™å­¸
 git@github.com:gn00254192/Draweducation.git         ssh
 
 
-¸j©w¾÷¾¹ªº SSH KEY
-¦]¬°­nÅı Github ª¾¹D¬O§Ú­Ì³o¥x¹q¸£¤W¶Çªº±M®×¡A
-©Ò¥H§Ú­Ì­n©M Github ¤§¶¡«Ø¥ß¤@ºØÀq«´¡A³o­ÓÀq«´´N¬O¨Ï¥Î ssh ¨ó©w®Éªº public key¡A
-§Ú­Ìµ¹ Github §Ú­Ì¥»¾÷ªº ssh public key ¡A
-§i¶D Github ®³µÛ³o­Ó key ªº¹q¸£¤~¬O³o­Ó±b¸¹ªº¨Ï¥ÎªÌ¡A 
-¦p¦¹¤@¨Ó´N¥u¯à¥Ñ³o¥x¹q¸£¶i¦æºŞ²z¡A¤~¤£·|³y¦¨¨ä¥L¤H¨Ó§Ú­Ìªº±b¸¹¶Ã¤W¶ÇªF¦èªºµ~¹Ò¡C
+ç¶å®šæ©Ÿå™¨çš„ SSH KEY
+å› ç‚ºè¦è®“ Github çŸ¥é“æ˜¯æˆ‘å€‘é€™å°é›»è…¦ä¸Šå‚³çš„å°ˆæ¡ˆï¼Œ
+æ‰€ä»¥æˆ‘å€‘è¦å’Œ Github ä¹‹é–“å»ºç«‹ä¸€ç¨®é»˜å¥‘ï¼Œé€™å€‹é»˜å¥‘å°±æ˜¯ä½¿ç”¨ ssh å”å®šæ™‚çš„ public keyï¼Œ
+æˆ‘å€‘çµ¦ Github æˆ‘å€‘æœ¬æ©Ÿçš„ ssh public key ï¼Œ
+å‘Šè¨´ Github æ‹¿è‘—é€™å€‹ key çš„é›»è…¦æ‰æ˜¯é€™å€‹å¸³è™Ÿçš„ä½¿ç”¨è€…ï¼Œ 
+å¦‚æ­¤ä¸€ä¾†å°±åªèƒ½ç”±é€™å°é›»è…¦é€²è¡Œç®¡ç†ï¼Œæ‰ä¸æœƒé€ æˆå…¶ä»–äººä¾†æˆ‘å€‘çš„å¸³è™Ÿäº‚ä¸Šå‚³æ±è¥¿çš„çª˜å¢ƒã€‚
 
-­º¥ı¡AÂI¿ï¥k¤W¨¤ªº¤u¨ã«ö¶s¡A¶i¤J±b¸¹³]©w­¶­±¡A¦b­¶­±ªº¥ª¤U¨¤ÂI¿ï SSH KEY
+é¦–å…ˆï¼Œé»é¸å³ä¸Šè§’çš„å·¥å…·æŒ‰éˆ•ï¼Œé€²å…¥å¸³è™Ÿè¨­å®šé é¢ï¼Œåœ¨é é¢çš„å·¦ä¸‹è§’é»é¸ SSH KEY
 
 http://dylandy.github.io/Easy-Git-Tutorial/index.html
+
+https://github.com/gn00254192/face.git    å‰é¡é ­ç•«å¸ƒ
+git@github.com:gn00254192/face.git
+
+git@github.com:gn00254192/MJCamera.git
+https://github.com/gn00254192/MJCamera.git   Mjcamera
+
+
+https://github.com/gn00254192/mjimagenetapi.git
+git@github.com:gn00254192/mjimagenetapi.git         mjimagenetapi  
