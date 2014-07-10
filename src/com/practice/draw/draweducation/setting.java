@@ -25,7 +25,7 @@ public class setting {
 	static String search;
 	static int pin=-1;
 	static Context draw;
-	static String[][] imagelist=new String[30][2];
+	static String[][] imagelist=new String[100][2];
 	static Bitmap takepicture= null;
 	static Bitmap drawpicture= null;
 	static int controlpictureload=1;

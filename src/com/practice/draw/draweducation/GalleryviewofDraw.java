@@ -16,6 +16,7 @@ import com.practice.draw.draweducation.setting;
 
 
 
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -33,6 +34,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -208,22 +210,48 @@ public class GalleryviewofDraw {
 					
 					mDialog.setCancelable(false);
 					
+
 					try {
 						file = new File(
 								Environment.getExternalStorageDirectory(),
-								"MJCamera");
+								"Draw");
 						// 若目錄不存在則建立目錄
 						if (!file.mkdirs()) {
 							Log.e("LOG_TAG", "無法建立目錄");
 						}
 						long time = System.currentTimeMillis();
-						file = new File(file, time / 1000 + ".png");
+						file = new File(file, time / 1000 + ".JPEG");
 						FileOutputStream out = new FileOutputStream(file);
 						// 將 Bitmap壓縮成指定格式的圖片並寫入檔案串流
-						bv.getSignatureBitmap().compress(
-								Bitmap.CompressFormat.PNG, 90, out);
+						
+						
+						 
+						
+						int A;
+						int mBitmapWidth =bv.getSignatureBitmap().getWidth();
+						int mBitmapHeight =bv.getSignatureBitmap().getHeight();
+						int pixelColor;
+						Bitmap newBitmap = Bitmap.createBitmap(bv.getSignatureBitmap(), 0, 0, mBitmapWidth, mBitmapHeight);
+						
+						
+						for (int i = 0; i <mBitmapWidth; i++) {   
+				            for (int j = 0; j <mBitmapHeight; j++) {  
+				            
+				            	pixelColor = newBitmap.getPixel(i, j);
+				            	A=Color.alpha(pixelColor);
+				            	
+				            	if(A==0 )
+				            	{
+				            		newBitmap.setPixel(i, j, Color.argb(255, 255, 255,255));
+				            	}
+				            }
+				        }
+					
+						newBitmap.compress(
+								Bitmap.CompressFormat.JPEG, 90, out);
 						out.flush();
 						out.close();
+						Toast.makeText(context, "存檔", Toast.LENGTH_SHORT).show();
 						SingleMediaScanner test = new SingleMediaScanner(
 								context, file);
 						// new Thread(new Runnable() {
