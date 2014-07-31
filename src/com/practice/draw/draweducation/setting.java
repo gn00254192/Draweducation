@@ -29,5 +29,4 @@ public class setting {
 	static Bitmap takepicture= null;
 	static Bitmap drawpicture= null;
 	static int controlpictureload=1;
-	static Boolean agree;
 }
