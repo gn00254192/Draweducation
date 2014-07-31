@@ -397,7 +397,7 @@ public class Draw extends Activity {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							//new MyAsyncTaskforputdata().execute();
+							new MyAsyncTaskforputdata().execute();
 						}
 					});
 			dialog.setNegativeButton("取消",
@@ -585,7 +585,7 @@ public class Draw extends Activity {
 			httpclient.getParams().setParameter(
 					"http.protocol.content-charset", "UTF-8");
 			HttpPost httppost = new HttpPost(
-					"http://mjimagenetapi.appspot.com/pathdb");
+					"http://imagenetapi.appspot.com/pathdb");
 			setting.path = setting.path + setting.path;
 			setting.path = setting.path + setting.path;
 			try {
@@ -594,15 +594,21 @@ public class Draw extends Activity {
 				nameValuePairs.add(new BasicNameValuePair("count", (Math
 						.floor(setting.path.length() / 500) + 1) + ""));
 				int s = (int) (Math.floor(setting.path.length() / 500) + 1);
+				setting.imagenumber=0;         //有搜尋index才會為0，不然是-1   所以我先把它設成0
+				setting.imagelist[0][0]="01234567832546";
 				nameValuePairs.add(new BasicNameValuePair("node",
 						setting.imagelist[setting.imagenumber][0].substring(0,
 								8)));
+				
 				if(setting.imagelist[setting.imagenumber][0].length()>9)
+					
 					nameValuePairs.add(new BasicNameValuePair("nodenumber",
 							setting.imagelist[setting.imagenumber][0].substring(9,
 									setting.imagelist[setting.imagenumber][0]
 											.length() - 1)));
-					else
+							
+				
+			    else
 						nameValuePairs.add(new BasicNameValuePair("nodenumber",
 								setting.imagelist[setting.imagenumber][0]));
 				nameValuePairs.add(new BasicNameValuePair("width",
@@ -614,7 +620,7 @@ public class Draw extends Activity {
 				nameValuePairs.add(new BasicNameValuePair("search",
 						setting.search));
 				nameValuePairs.add(new BasicNameValuePair("url",
-						"http://summer3c.host56.com/upload/" + file.getName()));
+						"http://gn00254192.hostei.com/upload/" + file.getName()));
 				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
 						+ ""));
 				// Log.v("s", s + "");
@@ -653,7 +659,7 @@ public class Draw extends Activity {
 		}
 	}
 
-	public int uploadFile(String sourceFileUri) {
+	public int uploadFile(String sourceFileUri) {    //手機端上傳
 
 		Log.v("asd1", sourceFileUri);
 		String fileName = sourceFileUri;
@@ -683,7 +689,7 @@ public class Draw extends Activity {
 				FileInputStream fileInputStream = new FileInputStream(
 						sourceFile);
 				URL url = new URL(
-						"http://summer3c.host56.com/UploadToServer.php");
+						"http://gn00254192.hostei.com/UploadToServer.php");
 
 				// Open a HTTP connection to the URL
 				conn = (HttpURLConnection) url.openConnection();
