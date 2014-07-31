@@ -5,6 +5,7 @@
 5)git remote add origin https://github.com/XFZLDXF/TEST.git   添加本地倉庫origin和指定遠程倉庫地址
 6)git push origin master  推送本地倉庫到遠程指定的master分支上
 
-
+1
+2 
 
 
