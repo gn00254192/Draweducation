@@ -6,4 +6,3 @@
 6)git push origin master  推送本地倉庫到遠程指定的master分支上
  
 testnew one
-testnew two
