@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-﻿test0731test2
-1)touch README.md文件是關於工程代碼的介紹，類似與使用說明書
+﻿1)touch README.md文件是關於工程代碼的介紹，類似與使用說明書
 =======
 ﻿1)touch README.md文件是關於工程代碼的介紹，類似與使用說明書
 >>>>>>> parent of 024d696... Revert "txt add word"
