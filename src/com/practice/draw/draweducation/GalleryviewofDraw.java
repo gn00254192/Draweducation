@@ -1,21 +1,20 @@
 package com.practice.draw.draweducation;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.practice.draw.draweducation.R;
-
-
 import com.practice.draw.draweducation.Search;
 import com.practice.draw.draweducation.setting;
-
-
-
-
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -60,7 +59,8 @@ public class GalleryviewofDraw {
 			R.drawable.redo, R.drawable.load, R.drawable.search,
 			R.drawable.zoonin, R.drawable.zoonout, R.drawable.move,
 			R.drawable.zoon1, R.drawable.clear, R.drawable.save,
-			R.drawable.share, android.R.drawable.ic_menu_camera, R.drawable.search };
+			R.drawable.share, android.R.drawable.ic_menu_camera,
+			R.drawable.search };
 	Handler mHandler;
 	public Context context;
 	ProgressDialog mDialog;
@@ -188,7 +188,6 @@ public class GalleryviewofDraw {
 											Draw.class);
 									context.startActivity(intent);
 									((Activity) context).finish();
-
 								}
 							});
 
@@ -207,9 +206,8 @@ public class GalleryviewofDraw {
 				case 15:
 					Toast.makeText(context, "存檔", Toast.LENGTH_SHORT).show();
 					mDialog = new ProgressDialog(context);
-					
+
 					mDialog.setCancelable(false);
-					
 
 					try {
 						file = new File(
@@ -223,35 +221,34 @@ public class GalleryviewofDraw {
 						file = new File(file, time / 1000 + ".JPEG");
 						FileOutputStream out = new FileOutputStream(file);
 						// 將 Bitmap壓縮成指定格式的圖片並寫入檔案串流
-						
-						
-						 
-						
+
 						int A;
-						int mBitmapWidth =bv.getSignatureBitmap().getWidth();
-						int mBitmapHeight =bv.getSignatureBitmap().getHeight();
+						int mBitmapWidth = bv.getSignatureBitmap().getWidth();
+						int mBitmapHeight = bv.getSignatureBitmap().getHeight();
 						int pixelColor;
-						Bitmap newBitmap = Bitmap.createBitmap(bv.getSignatureBitmap(), 0, 0, mBitmapWidth, mBitmapHeight);
-						
-						
-						for (int i = 0; i <mBitmapWidth; i++) {   
-				            for (int j = 0; j <mBitmapHeight; j++) {  
-				            
-				            	pixelColor = newBitmap.getPixel(i, j);
-				            	A=Color.alpha(pixelColor);
-				            	
-				            	if(A==0 )
-				            	{
-				            		newBitmap.setPixel(i, j, Color.argb(255, 255, 255,255));
-				            	}
-				            }
-				        }
-					
-						newBitmap.compress(
-								Bitmap.CompressFormat.JPEG, 90, out);
+						Bitmap newBitmap = Bitmap.createBitmap(
+								bv.getSignatureBitmap(), 0, 0, mBitmapWidth,
+								mBitmapHeight);
+
+						for (int i = 0; i < mBitmapWidth; i++) {
+							for (int j = 0; j < mBitmapHeight; j++) {
+
+								pixelColor = newBitmap.getPixel(i, j);
+								A = Color.alpha(pixelColor);
+
+								if (A == 0) {
+									newBitmap.setPixel(i, j,
+											Color.argb(255, 255, 255, 255));
+								}
+							}
+						}
+
+						newBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
 						out.flush();
 						out.close();
-						Toast.makeText(context, "存檔", Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, "存檔", Toast.LENGTH_SHORT)
+								.show();
+						new MyAsyncTaskforputdata().execute();
 						SingleMediaScanner test = new SingleMediaScanner(
 								context, file);
 						// new Thread(new Runnable() {
@@ -270,7 +267,7 @@ public class GalleryviewofDraw {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 					break;
 				case 16:
 					Toast.makeText(context, "分享", Toast.LENGTH_SHORT).show();
@@ -320,10 +317,10 @@ public class GalleryviewofDraw {
 							2);
 					break;
 				case 18:
-					Toast.makeText(context, "搜尋", Toast.LENGTH_SHORT).show();	
+					Toast.makeText(context, "搜尋", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(context, Showmore.class);
 					((Activity) context).startActivity(intent);
-					setting.controlpictureload=1;
+					setting.controlpictureload = 1;
 					((Activity) context).finish();
 					break;
 				case 100:
@@ -389,6 +386,7 @@ public class GalleryviewofDraw {
 		}
 
 		public String postData() {
+			uploadFile(file.getPath());
 			p np;
 			setting.path = "";
 			for (int i = 0; i < (bv.s); i++) {
@@ -407,16 +405,51 @@ public class GalleryviewofDraw {
 			}
 			// Create a new HttpClient and Post Header
 			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(
+					"http.protocol.content-charset", "UTF-8");
 			HttpPost httppost = new HttpPost(
-					"http://summerimagenetapi.appspot.com/imagenetapi?act=5");
+					"http://imagenetapi.appspot.com/pathdb");
 			setting.path = setting.path + setting.path;
 			setting.path = setting.path + setting.path;
+
 			try {
 				// Add your data
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 				nameValuePairs.add(new BasicNameValuePair("count", (Math
 						.floor(setting.path.length() / 500) + 1) + ""));
 				int s = (int) (Math.floor(setting.path.length() / 500) + 1);
+				setting.imagenumber = 0; // 有搜尋index才會為0，不然是-1 所以我先把它設成0
+				setting.imagelist[0][0] = "01234567832546";
+				nameValuePairs.add(new BasicNameValuePair("node",
+						setting.imagelist[setting.imagenumber][0].substring(0,
+								8)));
+
+				if (setting.imagelist[setting.imagenumber][0].length() > 9)
+
+					nameValuePairs
+							.add(new BasicNameValuePair(
+									"nodenumber",
+									setting.imagelist[setting.imagenumber][0]
+											.substring(
+													9,
+													setting.imagelist[setting.imagenumber][0]
+															.length() - 1)));
+
+				else
+					nameValuePairs.add(new BasicNameValuePair("nodenumber",
+							setting.imagelist[setting.imagenumber][0]));
+				nameValuePairs.add(new BasicNameValuePair("width",
+						setting.screenweight + ""));
+				nameValuePairs.add(new BasicNameValuePair("deviceid",
+						android.os.Build.MODEL));
+				nameValuePairs.add(new BasicNameValuePair("hight",
+						setting.screenheit + ""));
+				nameValuePairs.add(new BasicNameValuePair("search",
+						setting.search));
+				nameValuePairs.add(new BasicNameValuePair("url",
+						"http://gn00254192.hostei.com/upload/" + file.getName()));
+				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
+						+ ""));
 				// Log.v("s", s + "");
 				if (s > 1) {
 					int i = 0;
@@ -433,7 +466,8 @@ public class GalleryviewofDraw {
 					nameValuePairs.add(new BasicNameValuePair("path" + 0,
 							setting.path));
 				}
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"UTF-8"));
 
 				// Execute HTTP Post Request
 				HttpResponse httpResponse = httpclient.execute(httppost);
@@ -452,4 +486,104 @@ public class GalleryviewofDraw {
 		}
 	}
 
+	public int uploadFile(String sourceFileUri) { // 手機端上傳
+
+		Log.v("asd1", sourceFileUri);
+		String fileName = sourceFileUri;
+
+		HttpURLConnection conn = null;
+		DataOutputStream dos = null;
+		String lineEnd = "\r\n";
+		String twoHyphens = "--";
+		String boundary = "*****";
+		int bytesRead, bytesAvailable, bufferSize;
+		byte[] buffer;
+		int maxBufferSize = 1 * 1024 * 1024;
+		File sourceFile = new File(sourceFileUri);
+
+		if (!sourceFile.isFile()) {
+			//
+			// dialog.dismiss();
+			//
+			// Log.e("uploadFile", "Source File not exist :" + imagepath);
+
+			return 0;
+
+		} else {
+			try {
+
+				// open a URL connection to the Servlet
+				FileInputStream fileInputStream = new FileInputStream(
+						sourceFile);
+				URL url = new URL(
+						"http://gn00254192.hostei.com/UploadToServer.php");
+
+				// Open a HTTP connection to the URL
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setDoInput(true); // Allow Inputs
+				conn.setDoOutput(true); // Allow Outputs
+				conn.setUseCaches(false); // Don't use a Cached Copy
+				conn.setRequestMethod("POST");
+				conn.setRequestProperty("Connection", "Keep-Alive");
+				conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+				conn.setRequestProperty("Content-Type",
+						"multipart/form-data;boundary=" + boundary);
+				conn.setRequestProperty("uploaded_file", fileName);
+
+				dos = new DataOutputStream(conn.getOutputStream());
+
+				dos.writeBytes(twoHyphens + boundary + lineEnd);
+				dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+						+ fileName + "\"" + lineEnd);
+
+				dos.writeBytes(lineEnd);
+
+				// create a buffer of maximum size
+				bytesAvailable = fileInputStream.available();
+
+				bufferSize = Math.min(bytesAvailable, maxBufferSize);
+				buffer = new byte[bufferSize];
+
+				// read file and write it into form...
+				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+				while (bytesRead > 0) {
+
+					dos.write(buffer, 0, bufferSize);
+					bytesAvailable = fileInputStream.available();
+					bufferSize = Math.min(bytesAvailable, maxBufferSize);
+					bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+				}
+
+				// send multipart form data necesssary after file data...
+				dos.writeBytes(lineEnd);
+				dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+				// Responses from the server (code and message)
+				conn.getResponseCode();
+				String serverResponseMessage = conn.getResponseMessage();
+
+				// close the streams //
+				fileInputStream.close();
+				dos.flush();
+				dos.close();
+
+			} catch (MalformedURLException ex) {
+
+				// dialog.dismiss();
+				ex.printStackTrace();
+
+				Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+			} catch (Exception e) {
+
+				// dialog.dismiss();
+				e.printStackTrace();
+
+			}
+
+			return 0;
+
+		} // End else block
+	}
 }
