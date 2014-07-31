@@ -1,9 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿1)touch README.md文件是關於工程代碼的介紹，類似與使用說明書
 =======
 ﻿add1
 1)touch README.md文件是關於工程代碼的介紹，類似與使用說明書
 >>>>>>> parent of c05ed18... add2
+=======
+﻿1)touch README.md文件是關於工程代碼的介紹，類似與使用說明書
+>>>>>>> parent of 9789806... add1
 2)git init  初始化一個本地的 git倉庫，生成隱藏的.git目錄(隱藏的.git目錄可使用ls -aF命令可以查看到)
 3)git add  README.md  把README.md文件添加到倉庫中
 4)git commit -m "first commit"  執行提交說明，在Gitz中這個屬於強制性的
