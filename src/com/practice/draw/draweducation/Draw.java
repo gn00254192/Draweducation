@@ -1,5 +1,7 @@
 package com.practice.draw.draweducation;
 
+
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -16,6 +18,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.practice.draw.draweducation.setting;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -37,6 +41,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -330,12 +335,8 @@ public class Draw extends Activity {
 							}
 							// 按下PositiveButton要做的事
 							setting.imagenumber = -1;
-
-							Intent intent = new Intent(Draw.this,
-									Firstmenu.class);
-							startActivity(intent);
+							//mDialog.dismiss();						
 							finish();
-
 						}
 					});
 			dialog.setNeutralButton("確定並存檔",
@@ -346,28 +347,49 @@ public class Draw extends Activity {
 							mDialog.setCancelable(false);
 							mDialog.show();
 							// TODO Auto-generated method stub
+							
 							try {
-								file = new File(Environment
-										.getExternalStorageDirectory(),
-										"MJCamera");
+								file = new File(
+										Environment.getExternalStorageDirectory(),
+										"Draw");
 								// 若目錄不存在則建立目錄
 								if (!file.mkdirs()) {
 									Log.e("LOG_TAG", "無法建立目錄");
 								}
 								long time = System.currentTimeMillis();
-								file = new File(file, time / 1000 + ".png");
-								FileOutputStream out = new FileOutputStream(
-										file);
+								file = new File(file, time / 1000 + ".JPEG");
+								FileOutputStream out = new FileOutputStream(file);
 								// 將 Bitmap壓縮成指定格式的圖片並寫入檔案串流
-								bv.getSignatureBitmap().compress(
-										Bitmap.CompressFormat.PNG, 90, out);
-								setting.upload = bv.getSignatureBitmap();
-								// 刷新並關閉檔案串流
+																
+								int A;
+								int mBitmapWidth =bv.getSignatureBitmap().getWidth();
+								int mBitmapHeight =bv.getSignatureBitmap().getHeight();
+								int pixelColor;
+								Bitmap newBitmap = Bitmap.createBitmap(bv.getSignatureBitmap(), 0, 0, mBitmapWidth, mBitmapHeight);
+								
+								
+								for (int i = 0; i <mBitmapWidth; i++) {   
+						            for (int j = 0; j <mBitmapHeight; j++) {  
+						            
+						            	pixelColor = newBitmap.getPixel(i, j);
+						            	A=Color.alpha(pixelColor);
+						            	
+						            	if(A==0 )
+						            	{
+						            		newBitmap.setPixel(i, j, Color.argb(255, 255, 255,255));
+						            	}
+						            }
+						        }
+							
+								newBitmap.compress(
+										Bitmap.CompressFormat.JPEG, 90, out);
+								setting.upload = newBitmap;
 								out.flush();
 								out.close();
-								// SingleMediaScanner test = new
-								// SingleMediaScanner(
-								// Draw.this, file);
+								SingleMediaScanner test = new SingleMediaScanner(
+										Draw.this, file);	
+								mDialog.dismiss();
+								Draw.this.finish();
 							} catch (FileNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -376,7 +398,6 @@ public class Draw extends Activity {
 								e.printStackTrace();
 							}
 							new MyAsyncTaskforputdata().execute();
-
 						}
 					});
 			dialog.setNegativeButton("取消",
@@ -420,7 +441,7 @@ public class Draw extends Activity {
 	@Override
 	public void onResume() {
 		try {
-			if (setting.imagenumber > -1) {
+			if (setting.imagenumber > -1 && setting.controlpictureload==1) {
 				mDialog = new ProgressDialog(Draw.this);
 				mDialog.setMessage("Loading...");
 				mDialog.setCancelable(false);
@@ -564,7 +585,7 @@ public class Draw extends Activity {
 			httpclient.getParams().setParameter(
 					"http.protocol.content-charset", "UTF-8");
 			HttpPost httppost = new HttpPost(
-					"http://mjimagenetapi.appspot.com/pathdb");
+					"http://imagenetapi.appspot.com/pathdb");
 			setting.path = setting.path + setting.path;
 			setting.path = setting.path + setting.path;
 			try {
@@ -573,15 +594,21 @@ public class Draw extends Activity {
 				nameValuePairs.add(new BasicNameValuePair("count", (Math
 						.floor(setting.path.length() / 500) + 1) + ""));
 				int s = (int) (Math.floor(setting.path.length() / 500) + 1);
+				setting.imagenumber=0;         //有搜尋index才會為0，不然是-1   所以我先把它設成0
+				setting.imagelist[0][0]="01234567832546";
 				nameValuePairs.add(new BasicNameValuePair("node",
 						setting.imagelist[setting.imagenumber][0].substring(0,
 								8)));
+				
 				if(setting.imagelist[setting.imagenumber][0].length()>9)
+					
 					nameValuePairs.add(new BasicNameValuePair("nodenumber",
 							setting.imagelist[setting.imagenumber][0].substring(9,
 									setting.imagelist[setting.imagenumber][0]
 											.length() - 1)));
-					else
+							
+				
+			    else
 						nameValuePairs.add(new BasicNameValuePair("nodenumber",
 								setting.imagelist[setting.imagenumber][0]));
 				nameValuePairs.add(new BasicNameValuePair("width",
@@ -593,7 +620,7 @@ public class Draw extends Activity {
 				nameValuePairs.add(new BasicNameValuePair("search",
 						setting.search));
 				nameValuePairs.add(new BasicNameValuePair("url",
-						"http://summer3c.host56.com/upload/" + file.getName()));
+						"http://gn00254192.hostei.com/upload/" + file.getName()));
 				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
 						+ ""));
 				// Log.v("s", s + "");
@@ -632,7 +659,7 @@ public class Draw extends Activity {
 		}
 	}
 
-	public int uploadFile(String sourceFileUri) {
+	public int uploadFile(String sourceFileUri) {    //手機端上傳
 
 		Log.v("asd1", sourceFileUri);
 		String fileName = sourceFileUri;
@@ -662,7 +689,7 @@ public class Draw extends Activity {
 				FileInputStream fileInputStream = new FileInputStream(
 						sourceFile);
 				URL url = new URL(
-						"http://summer3c.host56.com/UploadToServer.php");
+						"http://gn00254192.hostei.com/UploadToServer.php");
 
 				// Open a HTTP connection to the URL
 				conn = (HttpURLConnection) url.openConnection();
