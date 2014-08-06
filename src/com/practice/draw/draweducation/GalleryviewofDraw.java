@@ -9,12 +9,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.practice.draw.draweducation.R;
 import com.practice.draw.draweducation.Search;
 import com.practice.draw.draweducation.setting;
+
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -64,6 +66,8 @@ public class GalleryviewofDraw {
 	Handler mHandler;
 	public Context context;
 	ProgressDialog mDialog;
+	private String imagepath = null;
+	private ProgressDialog dialog = null;
 	boolean change = true, ini = true;
 	float ix;
 	int r, onnum;
@@ -104,11 +108,10 @@ public class GalleryviewofDraw {
 					break;
 				case 3:
 					Toast.makeText(context, "筆觸縮小", Toast.LENGTH_SHORT).show();
-					Toast.makeText(context, "筆觸縮小", Toast.LENGTH_SHORT).show();
-					if (setting.penweith - 5 < 1)
-						setting.penweith = 1;
+					if  (setting.penweith - 3 < 3)
+						setting.penweith = 3;
 					else
-						setting.penweith -= 5;
+						setting.penweith -= 3;
 					break;
 				case 4:
 					if (setting.done) {
@@ -408,33 +411,23 @@ public class GalleryviewofDraw {
 			httpclient.getParams().setParameter(
 					"http.protocol.content-charset", "UTF-8");
 			HttpPost httppost = new HttpPost(
-					"http://imagenetapi.appspot.com/pathdb");
+					"http://mjimagenetapi.appspot.com/pathdb");
 			setting.path = setting.path + setting.path;
 			setting.path = setting.path + setting.path;
-
 			try {
 				// Add your data
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 				nameValuePairs.add(new BasicNameValuePair("count", (Math
 						.floor(setting.path.length() / 500) + 1) + ""));
 				int s = (int) (Math.floor(setting.path.length() / 500) + 1);
-				setting.imagenumber = 0; // 有搜尋index才會為0，不然是-1 所以我先把它設成0
-				setting.imagelist[0][0] = "01234567832546";
 				nameValuePairs.add(new BasicNameValuePair("node",
 						setting.imagelist[setting.imagenumber][0].substring(0,
 								8)));
-
-				if (setting.imagelist[setting.imagenumber][0].length() > 9)
-
-					nameValuePairs
-							.add(new BasicNameValuePair(
-									"nodenumber",
-									setting.imagelist[setting.imagenumber][0]
-											.substring(
-													9,
-													setting.imagelist[setting.imagenumber][0]
-															.length() - 1)));
-
+				if(setting.imagelist[setting.imagenumber][0].length()>9)
+				nameValuePairs.add(new BasicNameValuePair("nodenumber",
+						setting.imagelist[setting.imagenumber][0].substring(9,
+								setting.imagelist[setting.imagenumber][0]
+										.length() - 1)));
 				else
 					nameValuePairs.add(new BasicNameValuePair("nodenumber",
 							setting.imagelist[setting.imagenumber][0]));
@@ -446,8 +439,9 @@ public class GalleryviewofDraw {
 						setting.screenheit + ""));
 				nameValuePairs.add(new BasicNameValuePair("search",
 						setting.search));
+				Log.v("sgagr",setting.search+","+URLEncoder.encode(setting.search, "utf-8"));
 				nameValuePairs.add(new BasicNameValuePair("url",
-						"http://gn00254192.hostei.com/upload/" + file.getName()));
+						"http://summer3c.host56.com/upload/" + file.getName()));
 				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
 						+ ""));
 				// Log.v("s", s + "");
@@ -468,13 +462,13 @@ public class GalleryviewofDraw {
 				}
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
 						"UTF-8"));
-
 				// Execute HTTP Post Request
 				HttpResponse httpResponse = httpclient.execute(httppost);
 
 				String content = "";
 
 				content += EntityUtils.toString(httpResponse.getEntity());
+				httpclient.getConnectionManager().shutdown();
 				return content;
 
 			} catch (ClientProtocolException e) {
@@ -486,7 +480,8 @@ public class GalleryviewofDraw {
 		}
 	}
 
-	public int uploadFile(String sourceFileUri) { // 手機端上傳
+
+	public int uploadFile(String sourceFileUri) {
 
 		Log.v("asd1", sourceFileUri);
 		String fileName = sourceFileUri;
@@ -502,10 +497,10 @@ public class GalleryviewofDraw {
 		File sourceFile = new File(sourceFileUri);
 
 		if (!sourceFile.isFile()) {
-			//
-			// dialog.dismiss();
-			//
-			// Log.e("uploadFile", "Source File not exist :" + imagepath);
+
+			dialog.dismiss();
+
+			Log.e("uploadFile", "Source File not exist :" + imagepath);
 
 			return 0;
 
@@ -516,7 +511,7 @@ public class GalleryviewofDraw {
 				FileInputStream fileInputStream = new FileInputStream(
 						sourceFile);
 				URL url = new URL(
-						"http://gn00254192.hostei.com/UploadToServer.php");
+						"http://summer3c.host56.com/UploadToServer.php");
 
 				// Open a HTTP connection to the URL
 				conn = (HttpURLConnection) url.openConnection();
@@ -568,22 +563,21 @@ public class GalleryviewofDraw {
 				fileInputStream.close();
 				dos.flush();
 				dos.close();
-
+				conn.disconnect();
 			} catch (MalformedURLException ex) {
 
-				// dialog.dismiss();
+				dialog.dismiss();
 				ex.printStackTrace();
 
 				Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
 			} catch (Exception e) {
 
-				// dialog.dismiss();
+				dialog.dismiss();
 				e.printStackTrace();
 
 			}
 
 			return 0;
-
 		} // End else block
 	}
 }

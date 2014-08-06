@@ -117,24 +117,24 @@ public class Search extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		menu.add(0, 0, 0, "more");
+//		menu.add(0, 0, 0, "more");
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// 依據itemId來判斷使用者點選哪一個item
-		switch (item.getItemId()) {
-		case 0:
-			if (setting.stat == 1) {
-				Intent intent = new Intent(this, Showmore.class);
-				startActivity(intent);
-			}
-			finish();
-			break;
-
-		default:
-		}
+//		switch (item.getItemId()) {
+//		case 0:
+//			if (setting.stat == 1) {
+//				Intent intent = new Intent(this, Showmore.class);
+//				startActivity(intent);
+//			}
+//			finish();
+//			break;
+//
+//		default:
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -354,7 +354,7 @@ public class Search extends Activity {
 				ImageLoader.getInstance().init(config);
 				ImageLoader imageLoader = ImageLoader.getInstance();
 				imageLoader.clearDiscCache();
-				imageLoader.clearMemoryCache();
+				imageLoader.clearMemoryCache();    //記憶體裡的暫存清掉
 				Intent intent = new Intent(Search.this, ImageGridActivity.class);
 				intent.putExtra(Extra.IMAGES, Constants.IMAGES);
 				startActivity(intent);

@@ -94,8 +94,9 @@ public class Showmore extends Activity {
 				myUrl = new URL("http://mjimagenetapi.appspot.com/showmore?name="
 						+ URLEncoder.encode(surl, "utf-8") + "&asc="
 						+ (int) (Math.random() * (65525) + 1));
-				setting.search = URLEncoder.encode(surl, "utf-8");
-				Log.v("searchurl", myUrl.toString());
+				setting.search = surl;
+				
+				Log.v("searchurl", surl+","+URLEncoder.encode(surl, "utf-8"));
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -214,7 +215,7 @@ public class Showmore extends Activity {
 				dialog.setMessage("找不到該物件，請重新搜尋");
 				dialog.setIcon(android.R.drawable.ic_dialog_alert);
 				dialog.setCancelable(false);
-				dialog.setPositiveButton("確定",
+				dialog.setPositiveButton("OK",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
