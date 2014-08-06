@@ -586,7 +586,7 @@ public class Draw extends Activity {
 			httpclient.getParams().setParameter(
 					"http.protocol.content-charset", "UTF-8");
 			HttpPost httppost = new HttpPost(
-					"http://mjimagenetapi.appspot.com/pathdb");
+					"http://imagenetapi.appspot.com/pathdb");
 			setting.path = setting.path + setting.path;
 			setting.path = setting.path + setting.path;
 			try {
@@ -615,7 +615,7 @@ public class Draw extends Activity {
 				nameValuePairs.add(new BasicNameValuePair("search",
 						setting.search));
 				nameValuePairs.add(new BasicNameValuePair("url",
-						"http://summer3c.host56.com/upload/" + file.getName()));
+						"http://gn00254192.hostei.com/upload/" + file.getName()));
 				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
 						+ ""));
 				// Log.v("s", s + "");
@@ -684,7 +684,7 @@ public class Draw extends Activity {
 				FileInputStream fileInputStream = new FileInputStream(
 						sourceFile);
 				URL url = new URL(
-						"http://summer3c.host56.com/UploadToServer.php");
+						"http://gn00254192.hostei.com/UploadToServer.php");
 
 				// Open a HTTP connection to the URL
 				conn = (HttpURLConnection) url.openConnection();
