@@ -156,7 +156,6 @@ public class Showmore extends Activity {
 							// imageids[count] =
 							// getBitmapFromURL(setting.imagelist[count][1]);
 							count++;
-
 						}
 					}
 					LOG.OUT(setting.stat);
