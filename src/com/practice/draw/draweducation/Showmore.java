@@ -136,7 +136,7 @@ public class Showmore extends Activity {
 							setting.imagelist[count][0] = str;
 							if ((str = reader.readLine()) != null)
 								setting.imagelist[count][1] = str;
-							Log.v("asdasd", setting.imagelist[count][0] + "");
+							Log.v("asdasd4", setting.imagelist[count][0] + "");
 							// imageids[count] =
 							// getBitmapFromURL(setting.imagelist[count][1]);
 							count++;
@@ -177,7 +177,7 @@ public class Showmore extends Activity {
 				for (int i = 0; i < count; i++) {
 
 					Constants.IMAGES[i] = setting.imagelist[i][1];
-					Log.v("asdasd", Constants.IMAGES[i] + "");
+					Log.v("asdasd5", Constants.IMAGES[i] + "");
 
 				}
 				mDialog.dismiss();

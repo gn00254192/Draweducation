@@ -29,4 +29,5 @@ public class setting {
 	static Bitmap takepicture= null;
 	static Bitmap drawpicture= null;
 	static int controlpictureload=1;
+	static String original_pic_url;
 }

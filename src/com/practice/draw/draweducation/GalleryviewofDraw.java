@@ -439,9 +439,11 @@ public class GalleryviewofDraw {
 						setting.screenheit + ""));
 				nameValuePairs.add(new BasicNameValuePair("search",
 						setting.search));
+				nameValuePairs.add(new BasicNameValuePair("original_pic_url",
+						setting.original_pic_url));
 				Log.v("sgagr",setting.search+","+URLEncoder.encode(setting.search, "utf-8"));
 				nameValuePairs.add(new BasicNameValuePair("url",
-						"http://summer3c.host56.com/upload/" + file.getName()));
+						"http://gn00254192.hostei.com/upload/" + file.getName()));
 				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
 						+ ""));
 				// Log.v("s", s + "");
@@ -485,7 +487,6 @@ public class GalleryviewofDraw {
 
 		Log.v("asd1", sourceFileUri);
 		String fileName = sourceFileUri;
-
 		HttpURLConnection conn = null;
 		DataOutputStream dos = null;
 		String lineEnd = "\r\n";
@@ -511,7 +512,7 @@ public class GalleryviewofDraw {
 				FileInputStream fileInputStream = new FileInputStream(
 						sourceFile);
 				URL url = new URL(
-						"http://summer3c.host56.com/UploadToServer.php");
+						"http://gn00254192.hostei.com/UploadToServer.php");
 
 				// Open a HTTP connection to the URL
 				conn = (HttpURLConnection) url.openConnection();

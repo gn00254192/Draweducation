@@ -474,7 +474,8 @@ public class Draw extends Activity {
 		protected String doInBackground(Void... params) {
 
 			bmp = getBitmapFromURL(setting.imagelist[setting.imagenumber][1]);
-
+			setting.original_pic_url=setting.imagelist[setting.imagenumber][1];
+			
 			return "surl";
 
 		}
@@ -614,6 +615,8 @@ public class Draw extends Activity {
 						setting.screenheit + ""));
 				nameValuePairs.add(new BasicNameValuePair("search",
 						setting.search));
+				nameValuePairs.add(new BasicNameValuePair("original_pic_url",
+						setting.original_pic_url));
 				nameValuePairs.add(new BasicNameValuePair("url",
 						"http://gn00254192.hostei.com/upload/" + file.getName()));
 				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
@@ -658,7 +661,6 @@ public class Draw extends Activity {
 
 		Log.v("asd1", sourceFileUri);
 		String fileName = sourceFileUri;
-
 		HttpURLConnection conn = null;
 		DataOutputStream dos = null;
 		String lineEnd = "\r\n";
