@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,94 +17,98 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.practice.draw.draweducation.Guide"
+            android:name=".FirstButtonView"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+          <activity
+            android:name=".Guide"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/title_activity_gride"
+            android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.CourseButton"
+            android:name=".CourseButton"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_course_button"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.practice.draw.draweducation.ImageListActivity"
+            android:name=".ImageListActivity"
             android:label="@string/ac_name_image_list" />
         <activity
-            android:name="com.practice.draw.draweducation.ImageGridActivity"
+            android:name=".ImageGridActivity"
             android:label="@string/ac_name_image_grid" />
         <activity
-            android:name="com.practice.draw.draweducation.ImagePagerActivity"
+            android:name=".ImagePagerActivity"
             android:label="@string/ac_name_image_pager" />
         <activity
-            android:name="com.practice.draw.draweducation.ImageGalleryActivity"
+            android:name=".ImageGalleryActivity"
             android:label="@string/ac_name_image_gallery" />
         <activity
-            android:name="com.practice.draw.draweducation.Firstmenu"
+            android:name=".Firstmenu"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/app_name"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Draw"
+            android:name=".Draw"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_draw"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Lessonone"
+            android:name=".Lessonone"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_lessonone"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Lessontwo"
+            android:name=".Lessontwo"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_lessontwo"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Lessonthree"
+            android:name=".Lessonthree"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_lessonthree"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Lessonfour"
+            android:name=".Lessonfour"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_lessonfour"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Lessonfive"
+            android:name=".Lessonfive"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_lessonfive"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Lessonsix"
+            android:name=".Lessonsix"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_lessonsix"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.DrawLessonOne"
+            android:name=".DrawLessonOne"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_draw_lesson_one"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.DrawLessonTwo"
+            android:name=".DrawLessonTwo"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_draw_lesson_one"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.practice.draw.draweducation.Showmore"
+            android:name=".Showmore"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:label="@string/title_activity_search" 
+            android:label="@string/title_activity_search"
             android:screenOrientation="landscape" >
-            
-           </activity>  
-          
-            <!-- Widget -->
-              <receiver android:name=".widget.UILWidgetProvider" >
+        </activity>
+
+        <!-- Widget -->
+        <receiver android:name=".widget.UILWidgetProvider" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />
@@ -113,7 +117,15 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </receiver>
-       <!-- test 0709 -->
+        <!-- test 0709 -->
+        <activity
+            android:name=".FirstPageButtonView"
+            android:label="@string/title_activity_first_page_button_view" >
+        </activity>
+        <activity
+            android:name=".First"
+            android:label="@string/title_activity_first" >
+        </activity>
     </application>
 
 </manifest>

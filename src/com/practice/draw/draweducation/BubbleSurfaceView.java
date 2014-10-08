@@ -1,6 +1,5 @@
 package com.practice.draw.draweducation;
 
-
 /*
  * pen 0 is pen .
  * pen 1 is eraser
@@ -272,7 +271,7 @@ class BubbleSurfaceView extends View implements
 		np1.g = (short) ((color >> 8) & 0xFF);
 		np1.b = (short) ((color >> 0) & 0xFF);
 		np1.w = (short) setting.penweith;
-		np1.pathlog = np1.pathlog + "l," + mX + "," + mY + ";";
+		np1.pathlog = np1.pathlog + "l," + sixtwo.zip((int)mX) + "," + sixtwo.zip((int)mY) + ";";
 
 		mPath = new Path();
 		if (s == 0)
@@ -319,8 +318,8 @@ class BubbleSurfaceView extends View implements
 		cY = mCurveEndY = (y + previousY) / 2;
 
 		mPath.quadTo(previousX, previousY, cX, cY);
-		np1.pathlog = np1.pathlog + "q," + previousX + "," + previousY + ","
-				+ cX + "," + cY + ";";
+		np1.pathlog = np1.pathlog + "q," + sixtwo.zip((int)previousX) + "," + sixtwo.zip((int)previousY) + ","
+				+sixtwo.zip((int) cX )+ "," + sixtwo.zip((int)cY) + ";";
 
 		// p np = new p();
 		// np.path = mPath;
@@ -330,7 +329,7 @@ class BubbleSurfaceView extends View implements
 		//
 		// mPath = new Path();
 		mPath.moveTo(cX, cY);
-		np1.pathlog = np1.pathlog + "m," + cX + "," + cY + ";";
+		np1.pathlog = np1.pathlog + "m," + sixtwo.zip((int)cX) + "," + sixtwo.zip((int)cY) + ";";
 
 		// union with the control point of the new curve
 		areaToRefresh.union((int) previousX - border, (int) previousY - border,
@@ -353,7 +352,7 @@ class BubbleSurfaceView extends View implements
 		mY = event.getY();
 
 		mPath.moveTo(mX, mY);
-		np1.pathlog = np1.pathlog + "m," + mX + "," + mY + ";";
+		np1.pathlog = np1.pathlog + "m," + sixtwo.zip((int)mX) + "," + sixtwo.zip((int)mY) + ";";
 
 		border = mInvalidateExtraBorder;
 		mInvalidRect.set((int) mX - border, (int) mY - border, (int) mX
@@ -375,8 +374,8 @@ class BubbleSurfaceView extends View implements
 		cX = mCurveEndX = (x + previousX) / 2;
 		cY = mCurveEndY = (y + previousY) / 2;
 
-		np1.pathlog = np1.pathlog + "q0," + previousX + "," + previousY + ","
-				+ cX + "," + cY + ";";
+		np1.pathlog = np1.pathlog + "q0," + sixtwo.zip((int)previousX) + "," + sixtwo.zip((int)previousY )+ ","
+				+ sixtwo.zip((int)cX) + "," + sixtwo.zip((int)cY )+ ";";
 		if (x > rx && x < rx + rw && y > ry && y < ry + rh) {
 
 			cX = (float) Math.floor((x - rx) * rs);
@@ -398,8 +397,8 @@ class BubbleSurfaceView extends View implements
 		cX = mCurveEndX = (x + previousX) / 2;
 		cY = mCurveEndY = (y + previousY) / 2;
 
-		np1.pathlog = np1.pathlog + "q," + previousX + "," + previousY + ","
-				+ cX + "," + cY + ";";
+		np1.pathlog = np1.pathlog + "q," + sixtwo.zip((int)previousX) + "," + sixtwo.zip((int)previousY )+ ","
+				+ sixtwo.zip((int)cX) + "," + sixtwo.zip((int)cY )+ ";";
 		mPath.quadTo(previousX, previousY, cX, cY);
 
 		// p np = new p();
@@ -410,7 +409,7 @@ class BubbleSurfaceView extends View implements
 		//
 		// mPath = new Path();
 		mPath.moveTo(cX, cY);
-		np1.pathlog = np1.pathlog + "m," + cX + "," + cY + ";";
+		np1.pathlog = np1.pathlog + "m," + sixtwo.zip((int)cX)+ "," + sixtwo.zip((int)cY) + ";";
 
 		// union with the control point of the new curve
 		areaToRefresh.union((int) previousX - border, (int) previousY - border,
@@ -432,7 +431,7 @@ class BubbleSurfaceView extends View implements
 		np1 = new p();
 		mX = event.getX();
 		mY = event.getY();
-		np1.pathlog = np1.pathlog + "m0," + mX + "," + mY + ";";
+		np1.pathlog = np1.pathlog + "m0," + sixtwo.zip((int)mX) + "," + sixtwo.zip((int)mY) + ";";
 		if (mX > rx && mX < rx + rw && mY > ry && mY < ry + rh) {
 			x = (float) Math.floor((mX - rx) * rs);
 			y = (float) Math.floor((mY - ry) * rs);
@@ -441,7 +440,7 @@ class BubbleSurfaceView extends View implements
 		}
 
 		mPath.moveTo(mX, mY);
-		np1.pathlog = np1.pathlog + "m," + mX + "," + mY + ";";
+		np1.pathlog = np1.pathlog + "m," + sixtwo.zip((int)mX) + "," + sixtwo.zip((int)mY) + ";";
 
 		border = mInvalidateExtraBorder;
 		mInvalidRect.set((int) mX - border, (int) mY - border, (int) mX

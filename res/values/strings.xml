@@ -14,12 +14,13 @@
     <string name="title_activity_lessonfive">Lessonfive</string>
     <string name="title_activity_lessonsix">Lessonsix</string>
     <string name="menu_item_draw">繪畫</string>
+        <string name="title_activity_gride">簡介</string>
     <string name="menu_item_eraser">橡皮擦</string>
     <string name="menu_item_mission_finish">完成作品</string>
     <string name="menu_item_mission_explain">任務說明</string>
     <string name="menu_item_camera">照相</string>
     <string name="menu_item_clear">清空</string>
-   <string name="title_activity_search">Search</string>
+    <string name="title_activity_search">Search</string>
     <!-- Activity titles -->
     <string name="ac_name_image_list">Image List Example</string>
     <string name="ac_name_image_grid">Image Grid Example</string>
@@ -38,5 +39,7 @@
     <!-- Content descriptions -->
     <string name="descr_image">Image</string>
     <string name="title_activity_draw_lesson_one">DrawLessonOne</string>
+    <string name="title_activity_first_page_button_view">FirstPageButtonView</string>
+    <string name="title_activity_first">First</string>
 
 </resources>

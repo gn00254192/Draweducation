@@ -13,10 +13,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.practice.draw.draweducation.p;
 import com.practice.draw.draweducation.R;
 import com.practice.draw.draweducation.Search;
 import com.practice.draw.draweducation.setting;
-
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -108,7 +108,7 @@ public class GalleryviewofDraw {
 					break;
 				case 3:
 					Toast.makeText(context, "筆觸縮小", Toast.LENGTH_SHORT).show();
-					if  (setting.penweith - 3 < 3)
+					if (setting.penweith - 3 < 3)
 						setting.penweith = 3;
 					else
 						setting.penweith -= 3;
@@ -375,8 +375,10 @@ public class GalleryviewofDraw {
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-
-			return postData();
+			if (setting.original_pic_url == null) {
+				return postDatanotsearch();
+			} else
+				return postData();
 		}
 
 		protected void onPostExecute(String result) {
@@ -423,11 +425,15 @@ public class GalleryviewofDraw {
 				nameValuePairs.add(new BasicNameValuePair("node",
 						setting.imagelist[setting.imagenumber][0].substring(0,
 								8)));
-				if(setting.imagelist[setting.imagenumber][0].length()>9)
-				nameValuePairs.add(new BasicNameValuePair("nodenumber",
-						setting.imagelist[setting.imagenumber][0].substring(9,
-								setting.imagelist[setting.imagenumber][0]
-										.length() - 1)));
+				if (setting.imagelist[setting.imagenumber][0].length() > 9)
+					nameValuePairs
+							.add(new BasicNameValuePair(
+									"nodenumber",
+									setting.imagelist[setting.imagenumber][0]
+											.substring(
+													9,
+													setting.imagelist[setting.imagenumber][0]
+															.length() - 1)));
 				else
 					nameValuePairs.add(new BasicNameValuePair("nodenumber",
 							setting.imagelist[setting.imagenumber][0]));
@@ -441,9 +447,89 @@ public class GalleryviewofDraw {
 						setting.search));
 				nameValuePairs.add(new BasicNameValuePair("original_pic_url",
 						setting.original_pic_url));
-				Log.v("sgagr",setting.search+","+URLEncoder.encode(setting.search, "utf-8"));
-				nameValuePairs.add(new BasicNameValuePair("url",
-						"http://gn00254192.hostei.com/upload/" + file.getName()));
+				Log.v("sgagr",
+						setting.search + ","
+								+ URLEncoder.encode(setting.search, "utf-8"));
+				nameValuePairs
+						.add(new BasicNameValuePair("url",
+								"http://gn00254192.hostei.com/upload/"
+										+ file.getName()));
+				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
+						+ ""));
+				// Log.v("s", s + "");
+				if (s > 1) {
+					int i = 0;
+					for (i = 0; i < (s - 1); i++) {
+						nameValuePairs
+								.add(new BasicNameValuePair("path" + i,
+										setting.path.substring(i * 500,
+												(i + 1) * 500)));
+					}
+					nameValuePairs.add(new BasicNameValuePair("path" + i,
+							setting.path.substring(i * 500)));
+
+				} else {
+					nameValuePairs.add(new BasicNameValuePair("path" + 0,
+							setting.path));
+				}
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"UTF-8"));
+				// Execute HTTP Post Request
+				HttpResponse httpResponse = httpclient.execute(httppost);
+
+				String content = "";
+
+				content += EntityUtils.toString(httpResponse.getEntity());
+				httpclient.getConnectionManager().shutdown();
+				return content;
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+			}
+			return null;
+		}
+
+		public String postDatanotsearch() {
+			uploadFile(file.getPath());
+			p np;
+			setting.path = "";
+			for (int i = 0; i < (bv.s); i++) {
+				np = bv.paths.get(i);
+				setting.path = setting.path + "p" + np.pen + ";";
+				if (np.pen == 0) {
+					setting.path = setting.path + "c" + np.a + "," + np.r + ","
+							+ np.g + "," + np.b + ";w" + np.w + ";";
+					setting.path = setting.path + "l" + np.pathlog + "";
+
+				} else {
+					setting.path = setting.path + "w" + np.w + ";";
+					setting.path = setting.path + "l" + np.pathlog + "";
+				}
+				setting.path = setting.path + "!";
+			}
+			// Create a new HttpClient and Post Header
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(
+					"http.protocol.content-charset", "UTF-8");
+			HttpPost httppost = new HttpPost(
+					"http://imagenetapi.appspot.com/test2");
+			setting.path = setting.path + setting.path;
+			setting.path = setting.path + setting.path;
+			try {
+				// Add your data
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("count", (Math
+						.floor(setting.path.length() / 500) + 1) + ""));
+				int s = (int) (Math.floor(setting.path.length() / 500) + 1);
+
+				nameValuePairs.add(new BasicNameValuePair("width",
+						setting.screenweight + ""));
+				nameValuePairs.add(new BasicNameValuePair("deviceid",
+						android.os.Build.MODEL));
+				nameValuePairs.add(new BasicNameValuePair("hight",
+						setting.screenheit + ""));
 				nameValuePairs.add(new BasicNameValuePair("pin", setting.pin
 						+ ""));
 				// Log.v("s", s + "");
@@ -481,7 +567,6 @@ public class GalleryviewofDraw {
 			return null;
 		}
 	}
-
 
 	public int uploadFile(String sourceFileUri) {
 
