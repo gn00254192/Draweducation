@@ -40,7 +40,7 @@ public class Lessontwo extends Activity {
 	               
 	        final LayoutInflater li = LayoutInflater.from(this);
 	        final Intent intent = new Intent();	
-	    	intent.setClass(this,Draw.class);
+	    	intent.setClass(this,DrawLessonTwo.class);
 	        //new 一個ArrayList<view> 來存放每個Page
 	    	final ArrayList<View> arrayView = new ArrayList<View>();
 	        arrayView.add(li.inflate(R.layout.guide_00, null));

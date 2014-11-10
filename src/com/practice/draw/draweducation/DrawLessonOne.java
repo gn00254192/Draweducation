@@ -1,9 +1,27 @@
 package com.practice.draw.draweducation;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import com.practice.draw.draweducation.BubbleSurfaceView;
 import com.practice.draw.draweducation.DrawLessonOne;
@@ -18,10 +36,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,21 +53,33 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.View.OnTouchListener;
 
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 public class DrawLessonOne extends Activity {
 	BubbleSurfaceView bv;
+	private ProgressDialog dialog = null;
 	ProgressDialog mDialog;
+	
+	private ImageView img;
+	private int intScreenX, intScreenY; /* 宣告儲存螢幕的解析度變數 */
+	private int picturesizeH, picturesizeW; /* 宣告圖片大小 */
+
 
 	// 宣告特約工人的經紀人
 
 	private Handler mThreadHandler;
 
 	// 宣告特約工人
-
+	File file;
 	private HandlerThread mThread;
 
 	/** Called when the activity is first created. */
@@ -54,6 +87,9 @@ public class DrawLessonOne extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 開啟全螢幕 
+				requestWindowFeature(Window.FEATURE_NO_TITLE);// 設定隱藏APP標題
 		setContentView(R.layout.draw_lesson_one);
 		DisplayMetrics metrics = new DisplayMetrics(); // 擷取螢幕大小
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);// 擷取螢幕大小
@@ -62,9 +98,93 @@ public class DrawLessonOne extends Activity {
 		bv = (BubbleSurfaceView) findViewById(R.id.surfaceView);
 		bv.setSignatureBitmap(this, metrics.widthPixels, metrics.heightPixels);
 		setting.pen = 0;
+		
+		
+//		windowwidth = getWindowManager().getDefaultDisplay().getWidth();
+//		windowheight = getWindowManager().getDefaultDisplay().getHeight();
+//		//取得圖形ball
+//		final ImageView img = (ImageView) findViewById(R.id.imageView1);
+//		//為ball設置手指觸碰的監聽器
+//		img.setOnTouchListener(new View.OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				//取得ball的界面相關數值
+//				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) img.getLayoutParams();
+//				switch (event.getAction()) {
+//				//按下時的動作
+//				case MotionEvent.ACTION_DOWN:
+//					break;
+//				//移動時的動作
+//				case MotionEvent.ACTION_MOVE:
+//					int x_cord = (int) event.getRawX();
+//					int y_cord = (int) event.getRawY();
+//
+//	
+//					//更改ball的位置
+//					c = x_cord -60;
+//					layoutParams.topMargin = y_cord -50;
+//					//更新ball的界面相關數值
+//					img.setLayoutParams(layoutParams);
+//					break;
+//				default:
+//					break;
+//				}
+//				return true;
+//			}
+//		});
+		img = (ImageView) findViewById(R.id.imageView1);
+		img.setOnTouchListener(imgListener);
+		
+		/* 取得螢幕物件 */
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		/* 取得螢幕解析像素 */
+		intScreenX = dm.widthPixels;
+		intScreenY = dm.heightPixels;
+		//Log.e("intScreenX", String.valueOf(intScreenX) + "~~" + String.valueOf(intScreenY));
+		
+		Resources res = getResources();   
+		Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.drawline); 
+		picturesizeH=bmp.getHeight();
+		picturesizeW=bmp.getWidth();
+		Log.e("bmp", String.valueOf(bmp.getHeight()) + "~~" + String.valueOf(bmp.getWidth()));
 
 	}
 
+	private OnTouchListener imgListener = new OnTouchListener() {
+		private float x, y; // 原本圖片存在的X,Y軸位置
+		private int mx, my; // 圖片被拖曳的X ,Y軸距離長度
+		private float rowx,rowy;
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			// TODO Auto-generated method stub
+			// Log.e("View", v.toString());
+			switch (event.getAction()) {
+
+			case MotionEvent.ACTION_DOWN:// 按下圖片時
+				Log.e("getTop", String.valueOf(img.getTop()) + "~~" + String.valueOf(picturesizeW));
+				rowx=event.getRawX();
+				rowy=event.getRawY();
+				x = event.getX();
+				y = rowy-img.getTop(); //event.getY();
+
+			case MotionEvent.ACTION_MOVE:// 移動圖片時
+				mx = (int) (event.getRawX()-x) ;
+				my = (int) (event.getRawY()-y );
+
+				v.layout(mx, my, mx + v.getWidth(), my + v.getHeight());
+				break;
+			}
+			//Log.e("address", String.valueOf(mx) + "~~" + String.valueOf(my)); // 記錄目前位置
+			//Log.e("getx", String.valueOf(x) + "~~" + String.valueOf(y)); // 記錄目前位置
+			return true;
+		}
+	};
+	
+	
+	
 	private Bitmap dijkstra(Bitmap image) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
@@ -343,25 +463,57 @@ public class DrawLessonOne extends Activity {
 			break;
 		case R.id.item_mission_finish:
 			Toast.makeText(this, "存檔", Toast.LENGTH_SHORT).show();
+			mDialog = new ProgressDialog(this);
+
+			mDialog.setCancelable(false);
+
 			try {
-				File file = new File(Environment.getExternalStorageDirectory(),
-						"MJCamera");
+				file = new File(Environment.getExternalStorageDirectory(),
+						"Draw");
 				// 若目錄不存在則建立目錄
 				if (!file.mkdirs()) {
 					Log.e("LOG_TAG", "無法建立目錄");
 				}
 				long time = System.currentTimeMillis();
-				file = new File(file, time / 1000 + ".png");
+				file = new File(file, time / 1000 + ".JPEG");
 				FileOutputStream out = new FileOutputStream(file);
 				// 將 Bitmap壓縮成指定格式的圖片並寫入檔案串流
-				bv.getSignatureBitmap().compress(Bitmap.CompressFormat.PNG, 90,
-						out);
-				setting.upload = bv.getSignatureBitmap();
-				// 刷新並關閉檔案串流
+
+				int A;
+				int mBitmapWidth = bv.getSignatureBitmap().getWidth();
+				int mBitmapHeight = bv.getSignatureBitmap().getHeight();
+				int pixelColor;
+				Bitmap newBitmap = Bitmap.createBitmap(bv.getSignatureBitmap(),
+						0, 0, mBitmapWidth, mBitmapHeight);
+
+				for (int i = 0; i < mBitmapWidth; i++) {
+					for (int j = 0; j < mBitmapHeight; j++) {
+
+						pixelColor = newBitmap.getPixel(i, j);
+						A = Color.alpha(pixelColor);
+
+						if (A == 0) {
+							newBitmap.setPixel(i, j,
+									Color.argb(255, 255, 255, 255));
+						}
+					}
+				}
+
+				newBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
 				out.flush();
 				out.close();
-				SingleMediaScanner scan = new SingleMediaScanner(
-						DrawLessonOne.this, file);
+				Toast.makeText(this, "存檔", Toast.LENGTH_SHORT).show();
+				new MyAsyncTaskforputdata().execute();
+				SingleMediaScanner test = new SingleMediaScanner(this, file);
+				// new Thread(new Runnable() {
+				// public void run() {
+				//
+				//
+				//
+				// }
+				// }).start();
+				// SingleMediaScanner test = new SingleMediaScanner(
+				// context, file);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -369,16 +521,17 @@ public class DrawLessonOne extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 			break;
 		case R.id.item_mission_explain:
 			Toast.makeText(this, "任務說明", Toast.LENGTH_SHORT).show();
-			Bitmap temp = null; 
+			Bitmap temp = null;
 			setting.drawpicture = bv.getSignatureBitmap();
-	
+
 			Intent intent = new Intent();
 			intent.setClass(DrawLessonOne.this, Lessonone.class);
 			startActivity(intent);
-			
+
 			finish();
 
 			break;
@@ -422,4 +575,199 @@ public class DrawLessonOne extends Activity {
 		return super.onOptionsItemSelected(item);
 
 	}
+
+	private class MyAsyncTaskforputdata extends
+			AsyncTask<String, Integer, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+
+			return postDatanotsearch();
+
+		}
+
+		protected void onPostExecute(String result) {
+			// myDialog = ProgressDialog.show(DemoActivity.this, "", "wait",
+			// true);
+		}
+
+		protected void onProgressUpdate(Integer... progress) {
+
+		}
+
+		public String postDatanotsearch() {
+			uploadFile(file.getPath());
+			p np;
+			setting.path = "";
+			for (int i = 0; i < (bv.s); i++) {
+				np = bv.paths.get(i);
+				setting.path = setting.path + "p" + np.pen + ";";
+				if (np.pen == 0) {
+					setting.path = setting.path + "c" + np.a + "," + np.r + ","
+							+ np.g + "," + np.b + ";w" + np.w + ";";
+					setting.path = setting.path + "l" + np.pathlog + "";
+
+				} else {
+					setting.path = setting.path + "w" + np.w + ";";
+					setting.path = setting.path + "l" + np.pathlog + "";
+				}
+				setting.path = setting.path + "!";
+			}
+			// Create a new HttpClient and Post Header
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(
+					"http.protocol.content-charset", "UTF-8");
+			HttpPost httppost = new HttpPost(
+					"http://imagenetapi.appspot.com/coursedb");
+			setting.path = setting.path + setting.path;
+			setting.path = setting.path + setting.path;
+			try {
+				// Add your data
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("count", (Math
+						.floor(setting.path.length() / 500) + 1) + ""));
+				int s = (int) (Math.floor(setting.path.length() / 500) + 1);
+
+				nameValuePairs.add(new BasicNameValuePair("width",
+						setting.screenweight + ""));
+				nameValuePairs.add(new BasicNameValuePair("deviceid",
+						android.os.Build.MODEL));
+				nameValuePairs.add(new BasicNameValuePair("hight",
+						setting.screenheit + ""));
+				nameValuePairs.add(new BasicNameValuePair("course", setting.courseone
+						+ ""));
+				// Log.v("s", s + "");
+				if (s > 1) {
+					int i = 0;
+					for (i = 0; i < (s - 1); i++) {
+						nameValuePairs
+								.add(new BasicNameValuePair("path" + i,
+										setting.path.substring(i * 500,
+												(i + 1) * 500)));
+					}
+					nameValuePairs.add(new BasicNameValuePair("path" + i,
+							setting.path.substring(i * 500)));
+
+				} else {
+					nameValuePairs.add(new BasicNameValuePair("path" + 0,
+							setting.path));
+				}
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"UTF-8"));
+				// Execute HTTP Post Request
+				HttpResponse httpResponse = httpclient.execute(httppost);
+
+				String content = "";
+
+				content += EntityUtils.toString(httpResponse.getEntity());
+				httpclient.getConnectionManager().shutdown();
+				return content;
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+			}
+			return null;
+		}
+	}
+
+	public int uploadFile(String sourceFileUri) {
+
+		Log.v("asd1", sourceFileUri);
+		String fileName = sourceFileUri;
+		HttpURLConnection conn = null;
+		DataOutputStream dos = null;
+		String lineEnd = "\r\n";
+		String twoHyphens = "--";
+		String boundary = "*****";
+		int bytesRead, bytesAvailable, bufferSize;
+		byte[] buffer;
+		int maxBufferSize = 1 * 1024 * 1024;
+		File sourceFile = new File(sourceFileUri);
+
+		if (!sourceFile.isFile()) {
+
+			dialog.dismiss();
+
+			return 0;
+
+		} else {
+			try {
+
+				// open a URL connection to the Servlet
+				FileInputStream fileInputStream = new FileInputStream(
+						sourceFile);
+				URL url = new URL(
+						"http://gn00254192.hostei.com/UploadToServer.php");
+
+				// Open a HTTP connection to the URL
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setDoInput(true); // Allow Inputs
+				conn.setDoOutput(true); // Allow Outputs
+				conn.setUseCaches(false); // Don't use a Cached Copy
+				conn.setRequestMethod("POST");
+				conn.setRequestProperty("Connection", "Keep-Alive");
+				conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+				conn.setRequestProperty("Content-Type",
+						"multipart/form-data;boundary=" + boundary);
+				conn.setRequestProperty("uploaded_file", fileName);
+
+				dos = new DataOutputStream(conn.getOutputStream());
+
+				dos.writeBytes(twoHyphens + boundary + lineEnd);
+				dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+						+ fileName + "\"" + lineEnd);
+
+				dos.writeBytes(lineEnd);
+
+				// create a buffer of maximum size
+				bytesAvailable = fileInputStream.available();
+
+				bufferSize = Math.min(bytesAvailable, maxBufferSize);
+				buffer = new byte[bufferSize];
+
+				// read file and write it into form...
+				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+				while (bytesRead > 0) {
+
+					dos.write(buffer, 0, bufferSize);
+					bytesAvailable = fileInputStream.available();
+					bufferSize = Math.min(bytesAvailable, maxBufferSize);
+					bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+				}
+
+				// send multipart form data necesssary after file data...
+				dos.writeBytes(lineEnd);
+				dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+				// Responses from the server (code and message)
+				conn.getResponseCode();
+				String serverResponseMessage = conn.getResponseMessage();
+
+				// close the streams //
+				fileInputStream.close();
+				dos.flush();
+				dos.close();
+				conn.disconnect();
+			} catch (MalformedURLException ex) {
+
+				dialog.dismiss();
+				ex.printStackTrace();
+
+				Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+			} catch (Exception e) {
+
+				dialog.dismiss();
+				e.printStackTrace();
+
+			}
+
+			return 0;
+		} // End else block
+	}
+
 }

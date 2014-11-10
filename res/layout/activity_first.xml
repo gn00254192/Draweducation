@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         android:layout_centerHorizontal="true"
         android:text="" 
-        android:background="@drawable/apple"/>
+        android:background="@drawable/cartoon"/>
 
     <TextView
         android:id="@+id/textView1"

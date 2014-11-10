@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,6 +24,9 @@ public class FirstButtonView extends Activity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 開啟全螢幕 
+				requestWindowFeature(Window.FEATURE_NO_TITLE);// 設定隱藏APP標題
 		setContentView(R.layout.activity_first);
 		final TextView test = (TextView) findViewById(R.id.textView1);
 		Timer timer = new Timer();
@@ -35,7 +40,7 @@ public class FirstButtonView extends Activity {
 							test.setTextColor(Color.TRANSPARENT); // 讓文字透明
 						} else {
 							change = true;
-							test.setTextColor(Color.DKGRAY);
+							test.setTextColor(Color.RED);
 						}
 					}
 				});
@@ -64,7 +69,7 @@ public class FirstButtonView extends Activity {
 			new Thread() {
 				public void run() {
 					try {
-						sleep(3000);
+						sleep(2000);
 						Intent intent = new Intent();
 						intent.setClass(FirstButtonView.this, Firstmenu.class);// Testone跳到Testtwo這個Activity
 						startActivity(intent);

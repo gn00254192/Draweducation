@@ -27,7 +27,7 @@ public class Lessonone extends Activity {
 		private ViewPager viewPager ;
 		private View currentViewPage;
 		private ImageView startbtn;
-	 
+	
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
@@ -37,7 +37,7 @@ public class Lessonone extends Activity {
 	        setContentView(R.layout.activity_guide);
 	         
 	        viewPager = (ViewPager)this.findViewById(R.id.viewPager);
-	               
+	
 	        final LayoutInflater li = LayoutInflater.from(this);
 	        final Intent intent = new Intent();	
 	    	intent.setClass(this,DrawLessonOne.class);
@@ -45,27 +45,7 @@ public class Lessonone extends Activity {
 	    	final ArrayList<View> arrayView = new ArrayList<View>();
 	       
 	        arrayView.add(li.inflate(R.layout.explainexampleone, null));
-	        arrayView.add(li.inflate(R.layout.lesson_one_explain, null));
-//	        arrayView.add(li.inflate(R.layout.guide_03, null));
-//	        arrayView.add(li.inflate(R.layout.guide_04, null));
-//	        arrayView.add(li.inflate(R.layout.guide_05, null));
-//	        arrayView.add(li.inflate(R.layout.guide_end, null));
-	        //arrayView.add(li.inflate(R.layout.h, null));
-	         
-	        
-	       
-	        
-	        //new 一個ArrayList 來放每個Page 的 Title
-//	        final ArrayList<String> titleArray = new ArrayList<String>();
-//	        titleArray.add("Page1");
-//	        titleArray.add("Page2");
-//	        titleArray.add("Page3");
-//	        titleArray.add("Page4");
-//	        titleArray.add("Page5");
-//	        titleArray.add("Page6");
-//	        titleArray.add("Page7");
-//	        titleArray.add("Page8");
-	      
+	        arrayView.add(li.inflate(R.layout.lesson_one_explain, null));      
 	        PagerAdapter apdter = new PagerAdapter() {
 	    
 	   @Override
@@ -109,32 +89,7 @@ public class Lessonone extends Activity {
 	   @Override
 	   public void onPageSelected(int arg0) {
 	    // TODO Auto-generated method stub
-		   
-//		if(arg0==0)
-//		{
-//			
-//			
-//			 Resources res=getResources();
-//			 
-//				Bitmap bmp=BitmapFactory.decodeResource(res, R.drawable.guide00); 
-//				final BitmapDrawable ob = new BitmapDrawable(bmp);
-//			ImageView imageView =(ImageView) findViewById(R.id.imageView0) ;
-//			imageView.setBackgroundDrawable(ob);
-//			
-//		}
-		
-//		if(arg0==1)
-//		{
-//			Resources res=getResources();
-//			 
-//			Bitmap bmp=BitmapFactory.decodeResource(res, R.drawable.guide01); 
-//			BitmapDrawable ob = new BitmapDrawable(bmp);
-//			ImageView imageView =(ImageView) findViewById(R.id.imageView1) ;
-//			imageView.setBackgroundDrawable(ob);
-//			
-//		}
-		   
-		   
+ 		   
 		   if (arg0==1)
 		   {
 			   startbtn = (ImageView) findViewById(R.id.startbtn);

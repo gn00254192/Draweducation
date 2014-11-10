@@ -514,7 +514,7 @@ public class GalleryviewofDraw {
 			httpclient.getParams().setParameter(
 					"http.protocol.content-charset", "UTF-8");
 			HttpPost httppost = new HttpPost(
-					"http://imagenetapi.appspot.com/test2");
+					"http://imagenetapi.appspot.com/path");
 			setting.path = setting.path + setting.path;
 			setting.path = setting.path + setting.path;
 			try {
